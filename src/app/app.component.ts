@@ -11,10 +11,18 @@ export class AppComponent implements OnInit {
   constructor(private appService: AppService) { }
 
   ngOnInit(): void {
-    this.getCategories();
+    this.getTriviaQuestions();
   }
 
   getCategories() {
-    this.appService.getTriviaCategories().subscribe((categories) => console.log(categories));
+    this.appService
+      .getTriviaCategories()
+      .subscribe((categories) => console.log(categories));
+  }
+
+  getTriviaQuestions() {
+    this.appService
+      .getTriviaQuestions('10', '15', 'medium', 'multiple')
+      .subscribe((questions) => console.log(questions.results));
   }
 }
