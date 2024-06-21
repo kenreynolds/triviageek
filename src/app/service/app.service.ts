@@ -3,6 +3,8 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 
+import { CategoryItem } from "../model/trivia.model";
+
 @Injectable({
   providedIn: "root",
 })
@@ -16,7 +18,7 @@ export class AppService {
 
   categories$ = this.http.get<any>(`${this.baseUrl}${this.categoryList}`).pipe(
     map((categories) => {
-      return categories.trivia_categories;
+      return categories.trivia_categories as CategoryItem[];
     }),
   );
 
