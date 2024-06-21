@@ -11,8 +11,8 @@ import { AppService } from "src/app/service/app.service";
 export class TriviaFormComponent implements OnInit {
   categories$ = this.appService.categories$;
   hasCategory = false;
-  triviaQuestions: any[] = [];
   triviaForm!: FormGroup;
+  triviaQuestions: QuestionItem[] = [];
 
   constructor(
     private appService: AppService,
@@ -35,9 +35,18 @@ export class TriviaFormComponent implements OnInit {
         this.appService
           .getTriviaQuestions("20", selectedCategory, "medium", "multiple")
           .subscribe((questions) => {
-            console.log(questions?.results as QuestionItem[]);
-            if (questions?.results.length > 0)
+            if (questions?.results.length > 0) {
               this.triviaQuestions = questions?.results;
+              this.triviaQuestions.forEach((triviaQuestion: QuestionItem) => {
+                triviaQuestion.incorrect_answers.push(
+                  triviaQuestion.correct_answer,
+                );
+                console.log(
+                  "--------------------------------------------------",
+                );
+                console.log(triviaQuestion);
+              });
+            }
           });
       },
     );

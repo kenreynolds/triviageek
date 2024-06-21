@@ -2,7 +2,7 @@
   <!-- Select category -->
   <div *ngIf="categories$ | async as categories; else noCategories">
     <mat-form-field appearance="fill">
-      <mat-label>Select a category</mat-label>
+      <mat-label>Category</mat-label>
       <mat-select formControlName="category">
         <mat-option *ngFor="let category of categories" [value]="category.id">
           {{ category.name }}
@@ -13,14 +13,22 @@
   <ng-template #noCategories>
     <p>No categories returned. Please refresh or try again later.</p>
   </ng-template>
-</form>
 
-<!-- Trivia questions -->
-<ul class="p-4" *ngIf="hasCategory">
-  <li
-    class="py-2"
-    *ngFor="let triviaQuestion of triviaQuestions; let i = index"
-  >
-    {{ i + 1 }}: {{ triviaQuestion.question }}
-  </li>
-</ul>
+  <!-- Trivia questions -->
+  <ul class="p-4" *ngIf="hasCategory">
+    <li
+      class="py-2"
+      *ngFor="let triviaQuestion of triviaQuestions; let i = index"
+    >
+      <p>{{ i + 1 }}: {{ triviaQuestion.question }}</p>
+      <div class="flex flex-col">
+        <mat-checkbox
+          class="px-4"
+          *ngFor="let answer of triviaQuestion.incorrect_answers"
+        >
+          {{ answer }}
+        </mat-checkbox>
+      </div>
+    </li>
+  </ul>
+</form>
