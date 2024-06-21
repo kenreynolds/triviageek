@@ -3,7 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 
-import { CategoryItem } from "../model/trivia.model";
+import { CategoryItem, QuestionItem } from "../model/trivia.model";
 
 @Injectable({
   providedIn: "root",
@@ -30,7 +30,7 @@ export class AppService {
     difficulty: string,
     type: string,
   ): Observable<any> {
-    return this.http.get(
+    return this.http.get<QuestionItem>(
       `${this.baseUrl}api.php?${this.numberOfQuestions}${numQuestions}${this.category}${category}${this.questionDifficulty}${difficulty}${this.questionType}${type}`,
     );
   }
