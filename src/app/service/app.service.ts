@@ -14,13 +14,13 @@ export class AppService {
   questionDifficulty = "&difficulty=";
   questionType = "&type=";
 
-  constructor(private http: HttpClient) {}
-
   categories$ = this.http.get<any>(`${this.baseUrl}${this.categoryList}`).pipe(
     map((categories) => {
       return categories.trivia_categories;
     }),
   );
+
+  constructor(private http: HttpClient) {}
 
   getTriviaQuestions(
     numQuestions: string,
