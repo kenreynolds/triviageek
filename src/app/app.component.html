@@ -1,3 +1,17 @@
-<h1 class="text-4xl">Welcome to Trivia Geek!</h1>
+<div class="p-4">
+  <h1 class="text-4xl mb-4">Welcome to Trivia Geek!</h1>
 
-<router-outlet></router-outlet>
+  <!-- Categories -->
+  <section class="p-4">
+    <ul *ngIf="categories$ | async as categories; else noCategories">
+      <li *ngFor="let category of categories">
+        {{category.id}}: {{category.name}}
+      </li>
+    </ul>
+    <ng-template #noCategories>
+      <p>No categories returned. Please refresh or try again later.</p>
+    </ng-template>
+  </section>
+
+  <router-outlet></router-outlet>
+</div>

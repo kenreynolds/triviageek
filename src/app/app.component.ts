@@ -1,28 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { AppService } from './service/app.service';
+import { Component, OnInit } from "@angular/core";
+import { AppService } from "./service/app.service";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html'
+  selector: "app-root",
+  templateUrl: "./app.component.html",
 })
 export class AppComponent implements OnInit {
-  title = 'Trivia Geek';
+  title = "Trivia Geek";
+  categories$ = this.appService.categories$;
 
-  constructor(private appService: AppService) { }
+  constructor(private appService: AppService) {}
 
   ngOnInit(): void {
     this.getTriviaQuestions();
   }
 
-  getCategories() {
-    this.appService
-      .getTriviaCategories()
-      .subscribe((categories) => console.log(categories));
-  }
-
   getTriviaQuestions() {
     this.appService
-      .getTriviaQuestions('10', '15', 'medium', 'multiple')
+      .getTriviaQuestions("20", "15", "medium", "multiple")
       .subscribe((questions) => console.log(questions.results));
   }
 }
