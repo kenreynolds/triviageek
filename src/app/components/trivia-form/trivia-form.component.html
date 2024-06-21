@@ -13,7 +13,14 @@
   <ng-template #noCategories>
     <p>No categories returned. Please refresh or try again later.</p>
   </ng-template>
-
-  <!-- Trivia questions -->
-  <div></div>
 </form>
+
+<!-- Trivia questions -->
+<ul class="p-4" *ngIf="hasCategory">
+  <li
+    class="py-2"
+    *ngFor="let triviaQuestion of triviaQuestions; let i = index"
+  >
+    {{ i + 1 }}: {{ triviaQuestion.question }}
+  </li>
+</ul>

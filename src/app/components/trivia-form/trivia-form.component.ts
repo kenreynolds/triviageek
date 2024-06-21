@@ -10,6 +10,8 @@ import { AppService } from "src/app/service/app.service";
 })
 export class TriviaFormComponent implements OnInit {
   categories$ = this.appService.categories$;
+  hasCategory = false;
+  triviaQuestions: any[] = [];
   triviaForm!: FormGroup;
 
   constructor(
@@ -29,11 +31,13 @@ export class TriviaFormComponent implements OnInit {
     const triviaCategoryControl = this.triviaForm.get("category");
     triviaCategoryControl?.valueChanges.subscribe(
       (selectedCategory: string) => {
+        this.hasCategory = true;
         this.appService
           .getTriviaQuestions("20", selectedCategory, "medium", "multiple")
           .subscribe((questions) => {
-            console.log("--------------------------------------------------");
-            console.log(questions.results as QuestionItem[]);
+            console.log(questions?.results as QuestionItem[]);
+            if (questions?.results.length > 0)
+              this.triviaQuestions = questions?.results;
           });
       },
     );
