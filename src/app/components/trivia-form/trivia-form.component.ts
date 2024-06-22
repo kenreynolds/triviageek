@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 
 import { QuestionItem } from "src/app/model/trivia.model";
 import { AppService } from "src/app/service/app.service";
+import { UtilsService } from "src/app/util/utils.service";
 
 @Component({
   selector: "app-trivia-form",
@@ -17,6 +18,7 @@ export class TriviaFormComponent implements OnInit {
   constructor(
     private appService: AppService,
     private fb: FormBuilder,
+    private utils: UtilsService,
   ) {}
 
   ngOnInit(): void {
@@ -40,6 +42,9 @@ export class TriviaFormComponent implements OnInit {
               this.triviaQuestions.forEach((triviaQuestion: QuestionItem) => {
                 triviaQuestion.incorrect_answers.push(
                   triviaQuestion.correct_answer,
+                );
+                triviaQuestion.incorrect_answers = this.utils.shuffle(
+                  triviaQuestion.incorrect_answers,
                 );
                 console.log(
                   "--------------------------------------------------",
