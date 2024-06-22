@@ -1,7 +1,7 @@
 <form [formGroup]="triviaForm">
   <!-- Select category -->
   <div *ngIf="categories$ | async as categories; else noCategories">
-    <mat-form-field appearance="fill">
+    <mat-form-field class="w-full" appearance="fill">
       <mat-label>Category</mat-label>
       <mat-select formControlName="category">
         <mat-option *ngFor="let category of categories" [value]="category.id">
@@ -15,7 +15,7 @@
   </ng-template>
 
   <!-- Trivia questions -->
-  <ul class="p-4" *ngIf="hasCategory; else noCategorySelected">
+  <ul class="py-4" *ngIf="hasCategory; else noCategorySelected">
     <li
       class="py-2"
       *ngFor="let triviaQuestion of triviaQuestions; let i = index"
@@ -24,7 +24,7 @@
       <div class="flex flex-col">
         <!-- TODO: Swap checkboxes for radio buttons so only one answer can be selected -->
         <mat-checkbox
-          class="px-4"
+          class="px-2"
           *ngFor="let answer of triviaQuestion.incorrect_answers"
         >
           {{ answer }}
