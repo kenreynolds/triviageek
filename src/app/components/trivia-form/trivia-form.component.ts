@@ -33,26 +33,30 @@ export class TriviaFormComponent implements OnInit {
     const triviaCategoryControl = this.triviaForm.get("category");
     triviaCategoryControl?.valueChanges.subscribe(
       (selectedCategory: string) => {
-        this.hasCategory = true;
-        this.appService
-          .getTriviaQuestions("20", selectedCategory, "medium", "multiple")
-          .subscribe((questions) => {
-            if (questions?.results.length > 0) {
-              this.triviaQuestions = questions?.results;
-              this.triviaQuestions.forEach((triviaQuestion: QuestionItem) => {
-                triviaQuestion.incorrect_answers.push(
-                  triviaQuestion.correct_answer,
-                );
-                triviaQuestion.incorrect_answers = this.utils.shuffle(
-                  triviaQuestion.incorrect_answers,
-                );
-                console.log(
-                  "--------------------------------------------------",
-                );
-                console.log(triviaQuestion);
-              });
-            }
-          });
+        if (selectedCategory !== "") {
+          this.hasCategory = true;
+          this.appService
+            .getTriviaQuestions("20", selectedCategory, "medium", "multiple")
+            .subscribe((questions) => {
+              if (questions?.results.length > 0) {
+                this.triviaQuestions = questions?.results;
+                this.triviaQuestions.forEach((triviaQuestion: QuestionItem) => {
+                  triviaQuestion.incorrect_answers.push(
+                    triviaQuestion.correct_answer,
+                  );
+                  triviaQuestion.incorrect_answers = this.utils.shuffle(
+                    triviaQuestion.incorrect_answers,
+                  );
+                  console.log(
+                    "--------------------------------------------------",
+                  );
+                  console.log(triviaQuestion);
+                });
+              }
+            });
+        } else {
+          this.hasCategory = false;
+        }
       },
     );
   }
