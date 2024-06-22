@@ -26,38 +26,42 @@ export class TriviaFormComponent implements OnInit {
       category: [""],
     });
 
-    this.getTriviaQuestions();
+    this.categoryListener();
   }
 
-  getTriviaQuestions() {
+  categoryListener() {
     const triviaCategoryControl = this.triviaForm.get("category");
     triviaCategoryControl?.valueChanges.subscribe(
       (selectedCategory: string) => {
         if (selectedCategory !== "") {
           this.hasCategory = true;
-          this.appService
-            .getTriviaQuestions("20", selectedCategory, "medium", "multiple")
-            .subscribe((questions) => {
-              if (questions?.results.length > 0) {
-                this.triviaQuestions = questions?.results;
-                this.triviaQuestions.forEach((triviaQuestion: QuestionItem) => {
-                  triviaQuestion.incorrect_answers.push(
-                    triviaQuestion.correct_answer,
-                  );
-                  triviaQuestion.incorrect_answers = this.utils.shuffle(
-                    triviaQuestion.incorrect_answers,
-                  );
-                  console.log(
-                    "--------------------------------------------------",
-                  );
-                  console.log(triviaQuestion);
-                });
-              }
-            });
+          this.getTriviaQuestions(selectedCategory);
         } else {
           this.hasCategory = false;
         }
       },
     );
+  }
+
+  getTriviaQuestions(selectedCategory: string) {
+    this.appService
+      .getTriviaQuestions("20", selectedCategory, "medium", "multiple")
+      .subscribe((questions) => {
+        if (questions?.results.length > 0) {
+          this.triviaQuestions = questions?.results;
+          this.setTriviaAnswers();
+        }
+      });
+  }
+
+  setTriviaAnswers() {
+    this.triviaQuestions.forEach((triviaQuestion: QuestionItem) => {
+      triviaQuestion.incorrect_answers.push(triviaQuestion.correct_answer);
+      triviaQuestion.incorrect_answers = this.utils.shuffle(
+        triviaQuestion.incorrect_answers,
+      );
+      console.log("--------------------------------------------------");
+      console.log(triviaQuestion);
+    });
   }
 }
