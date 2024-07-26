@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 
 import { QuestionItem } from "src/app/model/trivia.model";
 import { AppService } from "src/app/service/app.service";
-import { UtilsService } from "src/app/util/utils.service";
 
 @Component({
   selector: "app-trivia-form",
@@ -12,27 +11,52 @@ import { UtilsService } from "src/app/util/utils.service";
 export class TriviaFormComponent implements OnInit {
   categories$ = this.appService.categories$;
   hasCategory = false;
+  hasQuestions = false;
   triviaForm!: FormGroup;
   triviaQuestions: QuestionItem[] = [];
 
   constructor(
     private appService: AppService,
     private fb: FormBuilder,
-    private utils: UtilsService,
   ) {}
 
   ngOnInit(): void {
     this.triviaForm = this.fb.group({
+      answers: [""],
       category: [""],
     });
 
+    console.log(this.triviaForm);
+    this.answersListener();
     this.categoryListener();
+  }
+
+  answersListener() {
+    const triviaAnswerControl = this.triviaForm.get('answers');
+    triviaAnswerControl?.valueChanges
+      .subscribe((selectedAnswer: string) => {
+        for (let i = 0; i < this.triviaQuestions.length; ++i) {
+          if (selectedAnswer === this.triviaQuestions[i].correctAnswer) {
+            console.log(`Correct answer! '${selectedAnswer}.'`);
+          } else {
+            console.log(`Wrong answer: '${selectedAnswer}'.`);
+          }
+        }
+        /* this.triviaQuestions.forEach(triviaQuestion => {
+          // console.log(triviaQuestion);
+          console.log(`Correct answer: ${triviaQuestion.correct_answer}`);
+          console.log('--------------------------------------------------');
+          selectedAnswer === triviaQuestion.correct_answer
+            ? console.log('Correct answer!')
+            : console.log('Sorry, that was the wrong answer.');
+        }); */
+      });
   }
 
   categoryListener() {
     const triviaCategoryControl = this.triviaForm.get("category");
-    triviaCategoryControl?.valueChanges.subscribe(
-      (selectedCategory: string) => {
+    triviaCategoryControl?.valueChanges
+      .subscribe((selectedCategory: string) => {
         if (selectedCategory !== "") {
           this.hasCategory = true;
           this.getTriviaQuestions(selectedCategory);
@@ -46,22 +70,14 @@ export class TriviaFormComponent implements OnInit {
   getTriviaQuestions(selectedCategory: string) {
     this.appService
       .getTriviaQuestions("20", selectedCategory, "medium", "multiple")
-      .subscribe((questions) => {
-        if (questions?.results.length > 0) {
-          this.triviaQuestions = questions?.results;
-          this.setTriviaAnswers();
+      .subscribe((questions: QuestionItem[]) => {
+        if (questions?.length > 0) {
+          this.triviaQuestions = questions;
+          this.hasQuestions = true;
+        } else {
+          this.triviaQuestions = [];
+          this.hasQuestions = false;
         }
       });
-  }
-
-  setTriviaAnswers() {
-    this.triviaQuestions.forEach((triviaQuestion: QuestionItem) => {
-      triviaQuestion.incorrect_answers.push(triviaQuestion.correct_answer);
-      triviaQuestion.incorrect_answers = this.utils.shuffle(
-        triviaQuestion.incorrect_answers,
-      );
-      console.log("--------------------------------------------------");
-      console.log(triviaQuestion);
-    });
   }
 }
