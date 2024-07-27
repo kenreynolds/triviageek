@@ -26,7 +26,6 @@ export class TriviaFormComponent implements OnInit {
       category: [""],
     });
 
-    console.log(this.triviaForm);
     this.answersListener();
     this.categoryListener();
   }
@@ -36,20 +35,18 @@ export class TriviaFormComponent implements OnInit {
     triviaAnswerControl?.valueChanges
       .subscribe((selectedAnswer: string) => {
         for (let i = 0; i < this.triviaQuestions.length; ++i) {
-          if (selectedAnswer === this.triviaQuestions[i].correctAnswer) {
-            console.log(`Correct answer! '${selectedAnswer}.'`);
-          } else {
-            console.log(`Wrong answer: '${selectedAnswer}'.`);
+          if (i === this.triviaQuestions[i].id) {
+            if (selectedAnswer === this.triviaQuestions[i].correctAnswer) {
+              console.log(`You chose the correct answer!`);
+              return;
+            } else {
+              console.log(`The answer you chose is incorrect. The correct answer is ${
+                this.triviaQuestions[i].correctAnswer
+              }`);
+              return;
+            }
           }
         }
-        /* this.triviaQuestions.forEach(triviaQuestion => {
-          // console.log(triviaQuestion);
-          console.log(`Correct answer: ${triviaQuestion.correct_answer}`);
-          console.log('--------------------------------------------------');
-          selectedAnswer === triviaQuestion.correct_answer
-            ? console.log('Correct answer!')
-            : console.log('Sorry, that was the wrong answer.');
-        }); */
       });
   }
 
@@ -57,11 +54,11 @@ export class TriviaFormComponent implements OnInit {
     const triviaCategoryControl = this.triviaForm.get("category");
     triviaCategoryControl?.valueChanges
       .subscribe((selectedCategory: string) => {
+        this.hasCategory = false;
+
         if (selectedCategory !== "") {
           this.hasCategory = true;
           this.getTriviaQuestions(selectedCategory);
-        } else {
-          this.hasCategory = false;
         }
       },
     );
