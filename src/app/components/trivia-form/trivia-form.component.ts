@@ -39,14 +39,16 @@ export class TriviaFormComponent implements OnInit {
       this.hasCorrectAnswer = false;
       this.hasWrongAnswer = false;
 
-      this.triviaQuestions.forEach(question => {
-        if (question.answers.includes(selectedAnswer)) {
-          console.log(`${question.id} ${question.question}`);
-          if (selectedAnswer === question.correctAnswer) {
+      this.triviaQuestions.forEach((triviaQuestion: QuestionItem) => {
+        const { id, correctAnswer, question } = triviaQuestion;
+
+        if (triviaQuestion.answers.includes(selectedAnswer)) {
+          console.log(`${id + 1}: ${question}`);
+          if (selectedAnswer === correctAnswer) {
             console.log('Correct answer!');
             this.hasCorrectAnswer = true;
           } else {
-            console.log(`Sorry, that's wrong. The correct answer was '${question.correctAnswer}'`);
+            console.log(`Sorry, that's wrong. The correct answer was '${correctAnswer}'`);
             this.hasWrongAnswer = false;
           }
           console.log('--------------------------------------------------');
