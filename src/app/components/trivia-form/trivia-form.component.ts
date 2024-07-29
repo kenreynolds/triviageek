@@ -49,7 +49,7 @@ export class TriviaFormComponent implements OnInit {
             this.hasCorrectAnswer = true;
           } else {
             console.log(`Sorry, that's wrong. The correct answer was '${correctAnswer}'`);
-            this.hasWrongAnswer = false;
+            this.hasWrongAnswer = true;
           }
           console.log('--------------------------------------------------');
         }
