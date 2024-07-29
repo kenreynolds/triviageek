@@ -11,7 +11,9 @@ import { AppService } from "src/app/service/app.service";
 export class TriviaFormComponent implements OnInit {
   categories$ = this.appService.categories$;
   hasCategory = false;
+  hasCorrectAnswer = false;
   hasQuestions = false;
+  hasWrongAnswer = false;
   triviaForm!: FormGroup;
   triviaQuestions: QuestionItem[] = [];
 
@@ -33,21 +35,24 @@ export class TriviaFormComponent implements OnInit {
   answersListener() {
     const triviaAnswerControl = this.triviaForm.get('answers');
     triviaAnswerControl?.valueChanges
-      .subscribe((selectedAnswer: string) => {
-        for (let i = 0; i < this.triviaQuestions.length; ++i) {
-          if (i === this.triviaQuestions[i].id) {
-            if (selectedAnswer === this.triviaQuestions[i].correctAnswer) {
-              console.log(`You chose the correct answer!`);
-              return;
-            } else {
-              console.log(`The answer you chose is incorrect. The correct answer is ${
-                this.triviaQuestions[i].correctAnswer
-              }`);
-              return;
-            }
+    .subscribe((selectedAnswer: string) => {
+      this.hasCorrectAnswer = false;
+      this.hasWrongAnswer = false;
+
+      this.triviaQuestions.forEach(question => {
+        if (question.answers.includes(selectedAnswer)) {
+          console.log(`${question.id} ${question.question}`);
+          if (selectedAnswer === question.correctAnswer) {
+            console.log('Correct answer!');
+            this.hasCorrectAnswer = true;
+          } else {
+            console.log(`Sorry, that's wrong. The correct answer was '${question.correctAnswer}'`);
+            this.hasWrongAnswer = false;
           }
+          console.log('--------------------------------------------------');
         }
       });
+    });
   }
 
   categoryListener() {
