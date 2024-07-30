@@ -10,30 +10,38 @@
       </mat-select>
     </mat-form-field>
   </div>
+
   <ng-template #noCategories>
     <p>No categories returned. Please refresh or try again later.</p>
   </ng-template>
 
   <!-- Trivia questions -->
   <ul class="py-4" *ngIf="hasCategory; else noCategorySelected">
-    <li
-      class="py-2"
-      *ngFor="let triviaQuestion of triviaQuestions; let i = index"
-    >
-      <p>{{ i + 1 }}: {{ triviaQuestion.question }}</p>
-      <mat-radio-group class="flex flex-col">
-        <mat-radio-button
-          class="px-2"
-          aria-label="Select an answer"
-          *ngFor="let answer of triviaQuestion.incorrect_answers"
-          [value]="answer"
-        >
-          {{ answer }}
-        </mat-radio-button>
-      </mat-radio-group>
-    </li>
+    <span *ngIf="hasQuestions; else noQuestionsAvailable">
+      <li
+        class="py-2"
+        *ngFor="let triviaQuestion of triviaQuestions; let i = index"
+      >
+        <p>{{ i + 1 }}: {{ triviaQuestion.question }}</p>
+        <mat-radio-group class="flex flex-col" formControlName="answers">
+          <mat-radio-button
+            class="px-2"
+            aria-label="Select an answer"
+            *ngFor="let answer of triviaQuestion.answers"
+            [value]="answer"
+          >
+            {{ answer }}
+          </mat-radio-button>
+        </mat-radio-group>
+      </li>
+    </span>
   </ul>
+
   <ng-template #noCategorySelected>
     <p>Please select a category to play Trivia Geek.</p>
+  </ng-template>
+
+  <ng-template #noQuestionsAvailable>
+    <p>No questions available at this time.</p>
   </ng-template>
 </form>
