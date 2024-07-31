@@ -1,0 +1,26 @@
+<div mat-dialog-content>
+  <div class="p-4">
+    <div
+      class="flex justify-center"
+      *ngIf="data.hasCorrectAnswer; else wrongAnswer"
+    >
+      <p class="text-lg text-green-500">
+        That's the correct answer!
+      </p>
+    </div>
+    <ng-template #wrongAnswer>
+      <p class="text-lg text-rose-500">
+        You chose incorrectly. The correct answer is "{{ data.correctAnswer }}"
+      </p>
+    </ng-template>
+  </div>
+</div>
+
+<div mat-dialog-actions>
+  <button
+    class="bg-sky-500 rounded-sm m-4 p-4 w-full"
+    (click)="onNextClick()"
+  >
+    Next
+  </button>
+</div>

@@ -23,11 +23,12 @@
         *ngFor="let triviaQuestion of triviaQuestions; let i = index"
       >
         <p>{{ i + 1 }}: {{ triviaQuestion.question }}</p>
+
         <mat-radio-group class="flex flex-col" formControlName="answers">
           <mat-radio-button
-            class="px-2"
+            class="px-2 rounded-md"
             aria-label="Select an answer"
-            *ngFor="let answer of triviaQuestion.answers"
+            *ngFor="let answer of triviaQuestion.answers; let j = index"
             [value]="answer"
           >
             {{ answer }}
