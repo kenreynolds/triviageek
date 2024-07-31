@@ -44,12 +44,12 @@ export class TriviaFormComponent implements OnInit {
 
         if (selectedAnswer) {
           this.triviaQuestions.forEach((triviaQuestion: QuestionItem) => {
-            const { id, correctAnswer, question } = triviaQuestion;
+            const { correctAnswer } = triviaQuestion;
 
             if (triviaQuestion.answers.includes(selectedAnswer)) {
               selectedAnswer === correctAnswer ? this.hasCorrectAnswer = true : this.hasWrongAnswer = true;
               this.dialog.open(AnswerResultsComponent, {
-                width: '75%',
+                width: '80%',
                 data: {
                   correctAnswer,
                   hasCorrectAnswer: this.hasCorrectAnswer,
@@ -76,7 +76,7 @@ export class TriviaFormComponent implements OnInit {
     );
   }
 
-  getTriviaQuestions(selectedCategory: string) {
+  private getTriviaQuestions(selectedCategory: string) {
     this.appService
       .getTriviaQuestions("20", selectedCategory, "medium", "multiple")
       .subscribe((questions: QuestionItem[]) => {
