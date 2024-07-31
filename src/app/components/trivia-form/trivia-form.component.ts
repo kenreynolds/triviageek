@@ -1,8 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { MatDialog } from "@angular/material/dialog";
 
 import { QuestionItem } from "src/app/model/trivia.model";
 import { AppService } from "src/app/service/app.service";
+import { AnswerResultsComponent } from "../answer-results/answer-results.component";
 
 @Component({
   selector: "app-trivia-form",
@@ -20,6 +22,7 @@ export class TriviaFormComponent implements OnInit {
   constructor(
     private appService: AppService,
     private fb: FormBuilder,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -35,26 +38,28 @@ export class TriviaFormComponent implements OnInit {
   answersListener() {
     const triviaAnswerControl = this.triviaForm.get('answers');
     triviaAnswerControl?.valueChanges
-    .subscribe((selectedAnswer: string) => {
-      this.hasCorrectAnswer = false;
-      this.hasWrongAnswer = false;
+      .subscribe((selectedAnswer: string) => {
+        this.hasCorrectAnswer = false;
+        this.hasWrongAnswer = false;
 
-      this.triviaQuestions.forEach((triviaQuestion: QuestionItem) => {
-        const { id, correctAnswer, question } = triviaQuestion;
+        if (selectedAnswer) {
+          this.triviaQuestions.forEach((triviaQuestion: QuestionItem) => {
+            const { correctAnswer } = triviaQuestion;
 
-        if (triviaQuestion.answers.includes(selectedAnswer)) {
-          console.log(`${id + 1}: ${question}`);
-          if (selectedAnswer === correctAnswer) {
-            console.log('Correct answer!');
-            this.hasCorrectAnswer = true;
-          } else {
-            console.log(`Sorry, that's wrong. The correct answer was '${correctAnswer}'`);
-            this.hasWrongAnswer = true;
-          }
-          console.log('--------------------------------------------------');
+            if (triviaQuestion.answers.includes(selectedAnswer)) {
+              selectedAnswer === correctAnswer ? this.hasCorrectAnswer = true : this.hasWrongAnswer = true;
+              this.dialog.open(AnswerResultsComponent, {
+                width: '80%',
+                data: {
+                  correctAnswer,
+                  hasCorrectAnswer: this.hasCorrectAnswer,
+                  hasWrongAnswer: this.hasWrongAnswer,
+                }
+              });
+            }
+          });
         }
       });
-    });
   }
 
   categoryListener() {
@@ -71,7 +76,7 @@ export class TriviaFormComponent implements OnInit {
     );
   }
 
-  getTriviaQuestions(selectedCategory: string) {
+  private getTriviaQuestions(selectedCategory: string) {
     this.appService
       .getTriviaQuestions("20", selectedCategory, "medium", "multiple")
       .subscribe((questions: QuestionItem[]) => {

@@ -1,3 +1,9 @@
+export interface AnswerData {
+  correctAnswer: string;
+  hasCorrectAnswer: boolean;
+  hasWrongAnswer: boolean;
+}
+
 export interface CategoryItem {
   id: string;
   name: string;

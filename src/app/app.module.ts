@@ -8,9 +8,10 @@ import { MaterialModule } from "./material/material.module";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { TriviaFormComponent } from "./components/trivia-form/trivia-form.component";
+import { AnswerResultsComponent } from './components/answer-results/answer-results.component';
 
 @NgModule({
-  declarations: [AppComponent, TriviaFormComponent],
+  declarations: [AppComponent, TriviaFormComponent, AnswerResultsComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
