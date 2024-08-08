@@ -35,6 +35,12 @@ export class TriviaFormComponent implements OnInit {
     this.categoryListener();
   }
 
+  /**
+   * Listen to the selected answer and display the result
+   * in a dialog box.
+   * @returns void
+   * @memberof TriviaFormComponent
+   */
   answersListener() {
     const triviaAnswerControl = this.triviaForm.get('answers');
     triviaAnswerControl?.valueChanges
@@ -43,7 +49,7 @@ export class TriviaFormComponent implements OnInit {
         this.hasWrongAnswer = false;
 
         if (selectedAnswer) {
-          for ( const { correctAnswer, answers } of this.triviaQuestions) {
+          for (const { correctAnswer, answers } of this.triviaQuestions) {
             if (answers.includes(selectedAnswer)) {
               selectedAnswer === correctAnswer ? this.hasCorrectAnswer = true : this.hasWrongAnswer = true;
               this.dialog.open(AnswerResultsComponent, {
@@ -60,6 +66,12 @@ export class TriviaFormComponent implements OnInit {
       });
   }
 
+  /**
+   * Listen to the selected category and fetch trivia questions
+   * from the API.
+   * @returns void
+   * @memberof TriviaFormComponent
+   */
   categoryListener() {
     const triviaCategoryControl = this.triviaForm.get("category");
     triviaCategoryControl?.valueChanges
@@ -74,16 +86,22 @@ export class TriviaFormComponent implements OnInit {
     );
   }
 
+  /**
+   * Fetch trivia questions from the API.
+   * @param {string} selectedCategory
+   * @returns void
+   * @memberof TriviaFormComponent
+   */
   private getTriviaQuestions(selectedCategory: string) {
     this.appService
       .getTriviaQuestions("20", selectedCategory, "medium", "multiple")
       .subscribe((questions: QuestionItem[]) => {
+        this.triviaQuestions = [];
+        this.hasQuestions = false;
+
         if (questions?.length > 0) {
           this.triviaQuestions = questions;
           this.hasQuestions = true;
-        } else {
-          this.triviaQuestions = [];
-          this.hasQuestions = false;
         }
       });
   }

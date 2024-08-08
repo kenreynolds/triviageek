@@ -17,6 +17,12 @@ export class AppService {
   questionDifficulty = "&difficulty=";
   questionType = "&type=";
 
+  /**
+   * Get trivia categories from the API.
+   * @returns An observable of trivia categories.
+   * @memberof AppService
+   * @see {@link https://opentdb.com/api_config.php | Open Trivia Database API}
+   */
   categories$ = this.http.get<any>(`${this.baseUrl}${this.categoryList}`)
     .pipe(
       map((categories) => {
@@ -29,6 +35,16 @@ export class AppService {
     private utils: UtilsService
   ) {}
 
+  /**
+   * Get trivia questions from the API.
+   * @param numQuestions The number of questions to fetch.
+   * @param category The category of the questions.
+   * @param difficulty The difficulty of the questions.
+   * @param type The type of the questions.
+   * @returns An observable of trivia questions.
+   * @memberof AppService
+   * @see {@link https://opentdb.com/api_config.php | Open Trivia Database API}
+   */
   getTriviaQuestions(
     numQuestions: string,
     category: string,
