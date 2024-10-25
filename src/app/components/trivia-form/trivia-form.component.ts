@@ -15,7 +15,6 @@ export class TriviaFormComponent implements OnInit {
   hasCategory = false;
   hasCorrectAnswer = false;
   hasQuestions = false;
-  hasWrongAnswer = false;
   triviaForm!: FormGroup;
   triviaQuestions: QuestionItem[] = [];
 
@@ -46,18 +45,16 @@ export class TriviaFormComponent implements OnInit {
     triviaAnswerControl?.valueChanges
       .subscribe((selectedAnswer: string) => {
         this.hasCorrectAnswer = false;
-        this.hasWrongAnswer = false;
 
         if (selectedAnswer) {
           for (const { correctAnswer, answers } of this.triviaQuestions) {
             if (answers.includes(selectedAnswer)) {
-              selectedAnswer === correctAnswer ? this.hasCorrectAnswer = true : this.hasWrongAnswer = true;
+              this.hasCorrectAnswer = selectedAnswer === correctAnswer;
               this.dialog.open(AnswerResultsComponent, {
                 width: '80%',
                 data: {
                   correctAnswer,
                   hasCorrectAnswer: this.hasCorrectAnswer,
-                  hasWrongAnswer: this.hasWrongAnswer,
                 }
               });
             }

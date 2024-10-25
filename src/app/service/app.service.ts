@@ -11,11 +11,11 @@ import { UtilsService } from "../util/utils.service";
 })
 export class AppService {
   baseUrl = "https://opentdb.com/";
-  categoryList = "api_category.php";
-  numberOfQuestions = "amount=";
-  category = "&category=";
-  questionDifficulty = "&difficulty=";
-  questionType = "&type=";
+  categoryListParam = "api_category.php";
+  numberOfQuestionsParam = "amount=";
+  categoryParam = "&category=";
+  questionDifficultyParam = "&difficulty=";
+  questionTypeParam = "&type=";
 
   /**
    * Get trivia categories from the API.
@@ -23,7 +23,7 @@ export class AppService {
    * @memberof AppService
    * @see {@link https://opentdb.com/api_config.php | Open Trivia Database API}
    */
-  categories$ = this.http.get<any>(`${this.baseUrl}${this.categoryList}`)
+  categories$ = this.http.get<any>(`${this.baseUrl}${this.categoryListParam}`)
     .pipe(
       map((categories) => {
         return categories.trivia_categories as CategoryItem[];
@@ -54,13 +54,13 @@ export class AppService {
     return this.http.get<any>(
       this.baseUrl
         + 'api.php?'
-        + this.numberOfQuestions
+        + this.numberOfQuestionsParam
         + numQuestions
-        + this.category
+        + this.categoryParam
         + category
-        + this.questionDifficulty
+        + this.questionDifficultyParam
         + difficulty
-        + this.questionType
+        + this.questionTypeParam
         + type,
     ).pipe(
       map(questions => {
