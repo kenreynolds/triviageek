@@ -16,9 +16,9 @@
   </ng-template>
 
   <!-- Trivia questions -->
-  <ul class="py-4" *ngIf="hasCategory; else noCategorySelected">
+  <div class="py-4" *ngIf="hasCategory; else noCategorySelected">
     <span *ngIf="hasQuestions; else noQuestionsAvailable">
-      <li
+      <div
         class="py-2"
         *ngFor="let triviaQuestion of triviaQuestions; let i = index"
       >
@@ -34,9 +34,9 @@
             {{ answer }}
           </mat-radio-button>
         </mat-radio-group>
-      </li>
+      </div>
     </span>
-  </ul>
+  </div>
 
   <ng-template #noCategorySelected>
     <p>Please select a category to play Trivia Geek.</p>
