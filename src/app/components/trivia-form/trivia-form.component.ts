@@ -92,14 +92,17 @@ export class TriviaFormComponent implements OnInit {
   private getTriviaQuestions(selectedCategory: string) {
     this.appService
       .getTriviaQuestions("20", selectedCategory, "medium", "multiple")
-      .subscribe((questions: QuestionItem[]) => {
-        this.triviaQuestions = [];
-        this.hasQuestions = false;
+      .subscribe({
+        next: (questions: QuestionItem[]) => {
+          this.triviaQuestions = [];
+          this.hasQuestions = false;
 
-        if (questions?.length > 0) {
-          this.triviaQuestions = questions;
-          this.hasQuestions = true;
-        }
+          if (questions?.length > 0) {
+            this.triviaQuestions = questions;
+            this.hasQuestions = true;
+          }
+        },
+        error: (error) => console.error(error),
       });
   }
 }
