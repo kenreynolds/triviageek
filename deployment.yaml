@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: triviageek-deployment
+  labels:
+    app: triviageek
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: triviageek
+  template:
+    metadata:
+      labels:
+        app: triviageek
+    spec:
+      containers:
+        - name: triviageek
+          image: kenreynolds/triviageek
+          imagePullPolicy: Always
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "1"
+            requests:
+              memory: "64Mi"
+              cpu: "0.5"
+          ports:
+            - containerPort: 80
