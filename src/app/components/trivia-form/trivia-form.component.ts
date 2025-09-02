@@ -25,13 +25,21 @@ export class TriviaFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.buildForm();
+    this.answersListener();
+    this.categoryListener();
+  }
+
+  /**
+   * Build the trivia form.
+   * @returns void
+   * @memberof TriviaFormComponent
+   */
+  buildForm() {
     this.triviaForm = this.fb.group({
       answers: [""],
       category: [""],
     });
-
-    this.answersListener();
-    this.categoryListener();
   }
 
   /**

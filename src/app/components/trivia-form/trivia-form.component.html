@@ -1,6 +1,7 @@
 <form [formGroup]="triviaForm">
   <!-- Select category -->
   <div *ngIf="categories$ | async as categories; else noCategories">
+    <h2 class="text-2xl">Select your preferred trivia category:</h2>
     <mat-form-field class="w-full" appearance="fill">
       <mat-label>Category</mat-label>
       <mat-select formControlName="category">

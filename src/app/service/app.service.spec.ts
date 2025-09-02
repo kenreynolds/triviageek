@@ -24,6 +24,24 @@ describe('AppService', () => {
     expect(service).toBeTruthy();
   });
 
+  it('should fetch categories from the API and return them as an Observable', (done) => {
+    const mockResponse = {
+      trivia_categories: [
+        { id: '9', name: 'General Knowledge' },
+        { id: '10', name: 'Entertainment: Books' }
+      ]
+    };
+
+    service.categories$.subscribe(categories => {
+      expect(categories).toEqual(mockResponse.trivia_categories);
+      done();
+    });
+
+    const req = httpMock.expectOne('https://opentdb.com/api_category.php');
+    expect(req.request.method).toBe('GET');
+    req.flush(mockResponse);
+  });
+
   it('should fetch trivia questions and process them correctly', () => {
     const mockResponse = {
       results: [
